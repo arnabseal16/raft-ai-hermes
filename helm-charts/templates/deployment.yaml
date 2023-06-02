@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-dep
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.web.replicas }}
+  selector:
+    matchLabels:
+      app: bird-of-hermes
+      role: web
+  template:
+    metadata:
+      labels:
+        app: bird-of-hermes
+        role: web
+    spec:
+      securityContext:
+        runAsGroup: 1000
+        runAsUser: 1000
+      containers:
+        - name: {{ .Release.Name }}-container
+          image: {{ .Values.web.image }}:{{ .Values.web.tag }}
+          ports:
+            - name: flask-port
+              containerPort: 8000
+          resources: {{ toYaml .Values.web.resources | nindent 12 }}
+          readinessProbe:
+            initialDelaySeconds: 10
+            httpGet:
+              port: flask-port
+              path: /
+          livenessProbe:
+            initialDelaySeconds: 10
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - "curl -XGET 127.0.0.1:8000"

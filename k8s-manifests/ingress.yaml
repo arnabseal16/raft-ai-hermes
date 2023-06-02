@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: hermes-ingress
+  namespace: hermes-raft-ai
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: the-bird-of-hermes-srv
+              servicePort: http

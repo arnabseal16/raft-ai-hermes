@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: raft-ai-flask
+  namespace: hermes-raft-ai
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bird-of-hermes
+      role: web
+  template:
+    metadata:
+      labels:
+        app: bird-of-hermes
+        role: web
+    spec:
+      securityContext:
+        runAsGroup: 1000
+        runAsUser: 1000
+      containers:
+        - name: hermes-container
+          image: arnabseal16/raft-ai-hermes:latest
+          ports:
+            - name: flask-port
+              containerPort: 8000
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 256Mi
+              cpu: 200m
+          readinessProbe:
+            initialDelaySeconds: 10
+            httpGet:
+              port: flask-port
+              path: /
+          livenessProbe:
+            initialDelaySeconds: 10
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - "curl -XGET 127.0.0.1:8000"

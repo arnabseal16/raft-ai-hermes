@@ -9,3 +9,9 @@ web:
     limits:
       memory: 256Mi
       cpu: 200m
+hpa:
+  enabled: true
+  maxReplicas: 10
+  cpu: 70
+  memory: 100
+  requests: 20

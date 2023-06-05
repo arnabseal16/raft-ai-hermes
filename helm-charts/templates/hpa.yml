@@ -6,7 +6,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: bird-of-hermes
+    name: {{ .Release.Name }}-dep
   minReplicas: {{ .Values.web.replicas }}
   maxReplicas: {{ .Values.hpa.maxReplicas }}
   metrics:

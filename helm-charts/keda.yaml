@@ -1,0 +1,13 @@
+kind: HTTPScaledObject
+apiVersion: http.keda.sh/v1apha1
+metadata:
+  name: {{ .Release.Name }}-keda
+spec:
+  targetPendingRequests: 10
+  scaleTargetRef:
+    deployment: {{ .Release.Name }}-dep
+    service: {{ .Release.Name }}-srv
+    port: 8000
+  replicas:
+    min: {{ .Values.web.replicas }}
+    max: {{ .Values.hpa.maxReplicas }}

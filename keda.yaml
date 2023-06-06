@@ -1,0 +1,13 @@
+kind: HTTPScaledObject
+apiVersion: http.keda.sh/v1apha1
+metadata:
+  name: raft-ai-hermes-keda
+spec:
+  targetPendingRequests: 10
+  scaleTargetRef:
+    deployment: raft-ai-hermes-dep
+    service: raft-ai-hermes-srv
+    port: 8000
+  replicas:
+    min: 2
+    max: 10

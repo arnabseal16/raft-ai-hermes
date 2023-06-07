@@ -9,3 +9,4 @@ opentelemetry-instrumentation==0.39b0
 opentelemetry-sdk==1.18.0
 opentelemetry-semantic-conventions==0.39b0
 opentelemetry-exporter-otlp-proto-http==1.12.0rc2
+locust==2.15.1
